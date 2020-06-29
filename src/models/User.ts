@@ -23,11 +23,7 @@ export class User {
     Object.assign(this.data, update);
   }
   // we are using Callback -a type annotation here
-  on(eventName: string, callback: Callback) {
-    const handlers = this.events[eventName] || []
-    handlers.push(callback)
-    this.events[eventName] = handlers
-  }
+
   trigger(eventName: string): void {
     const handlers = this.events[eventName]
 
@@ -45,6 +41,15 @@ export class User {
     .then((response: AxiosResponse): void => {
       this.set(response.data);
     })
+
+  }
+  save(): void {
+    const id = this.get('id')
+    if(this.get('id')){
+      axios.put(`http://localhost:3000/users/${id}`, this.data)
+    }else{
+      axios.post(`http://localhost:3000/users/`, this.data)
+    }
 
   }
 }
