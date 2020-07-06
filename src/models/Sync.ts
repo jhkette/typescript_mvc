@@ -11,6 +11,8 @@ interface HasId{
     id?: number
 }
 
+// The t generic is going to be a user object
+// with an id or another object with an id
 export class Sync<T extends HasId> {
 
     constructor(public rootUrl: string){}
