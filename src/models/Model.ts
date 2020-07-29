@@ -1,6 +1,6 @@
 import { AxiosPromise } from "axios";
 import { AxiosResponse } from "axios";
-import { UserProps } from "./User";
+
 
 interface ModelAttributes<T> {
   set(value: T): void;
