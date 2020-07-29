@@ -1,7 +1,7 @@
 import {User} from './models/User'
 
-const user = new User({name: "new record", age: 8})
-const user1 = new User({id: 1, name: 'newer name', age: 0})
+const user =  User.buildUser({name: "new record", age: 8})
+const user1 = User.buildUser({id: 1, name: 'newer name', age: 0})
 
 
 

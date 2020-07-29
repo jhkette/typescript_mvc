@@ -1,7 +1,8 @@
+
+import { Model } from "./Model";
 import { Eventing } from "./Eventing";
-import { Sync } from "./Sync";
-import { Attributes } from "./Attributes";
-import { AxiosResponse } from "axios";
+import { ApiSync } from "./ApiSync";
+import {Attributes} from "./Attributes";
 
 export interface UserProps {
   id?: number;
@@ -9,64 +10,21 @@ export interface UserProps {
   age?: number;
 }
 
+// using a static method for object composition
+// The static method return a new User - we then create a
+// new user with the Attributes, Eventing and ApiSync class. 
 const rootUrl = "http://localhost:3000/users";
-export class User {
-  // we don't need to create a static
-  // function here which add a new eventing class
-  // passed in from a contrcutir here.
-  //  eventing is always going to be needed
-  //  we are always going to need this class
-  //  so just use it here. So we are hardcoding
-  public events: Eventing = new Eventing();
-
-  public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl);
-  public attributes: Attributes<UserProps>;
-
-  // the constructor takes the attrs parameter
-  // this.attributes = a new instance of attributes that takes the UserProps
-  // generic and the attrs
-  constructor(attrs: UserProps) {
-    this.attributes = new Attributes<UserProps>(attrs);
-  }
-
-  get on(){
-    return this.events.on
-  }
-
-  get trigger(){
-    return this.events.trigger
-  }
-
-  get get(){
-    return this.attributes.get
-  }
-
-  set (update: UserProps): void {
-    this.attributes.set(update);
-    this.events.trigger('change')
-
-  }
-
-  fetch(): void{
-    const id = this.attributes.get('id')
-
-    if(typeof id !== 'number'){
-      throw new Error('Cannot fetch without id')
-    }
-    this.sync.fetch(id).then((response: AxiosResponse): void => {
-      // referencing this.set
-      // in the class to also trigger change
-      // event.
-      this.set(response.data)
-    })
-  }
-  save(): void {
-    this.sync.save(this.attributes.getAll())
-    .then((respnse: AxiosResponse): void => {
-      this.trigger('save')
-    })
-    .catch(() => {
-      this.trigger('error')
-    })
-  }
+export class User extends Model<UserProps>{
+  static buildUser(attrs: UserProps) : User {
+    return new User (
+      new Attributes<UserProps>(attrs),
+      new Eventing(),
+      new ApiSync<UserProps>(rootUrl)
+    )
+  }  
 }
+
+const user = User.buildUser({})
+user.get('id')
+user.get('name')
+user.get('age')
