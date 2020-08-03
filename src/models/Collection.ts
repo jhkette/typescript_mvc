@@ -1,9 +1,11 @@
-import {User, UserProps} from './User'
+
 import {Eventing} from './Eventing'
 import axios, {AxiosResponse} from 'axios';
-export class Collection {
-    constructor(public rootUrl: string){}
-    models: User[] = [];
+// T is the type of whatever collection we needd. Ie user, messgae, comments
+export class Collection <T, K>{
+    constructor(public rootUrl: string,
+        public deserialise: (json: K ) => T){}
+    models: T[] = [];
     events: Eventing = new Eventing()
 
 
@@ -18,9 +20,9 @@ export class Collection {
     fetch(): void {
         axios.get(this.rootUrl)
         .then((response: AxiosResponse) => {
-            response.data.forEach((value: UserProps) => {
-                const user = User.buildUser(value)
-                this.models.push(user)
+            response.data.forEach((value: K) => {
+                
+                this.models.push(this.deserialise(value))
             });
         })
 
