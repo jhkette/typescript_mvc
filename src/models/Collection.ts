@@ -1,7 +1,8 @@
 
 import {Eventing} from './Eventing'
 import axios, {AxiosResponse} from 'axios';
-// T is the type of whatever collection we needd. Ie user, messgae, comments
+// T is the type of whatever collection we needd. Ie user, messgae, comments. In this
+// app it is Users. 
 export class Collection <T, K>{
     models: T[] = [];
     events: Eventing = new Eventing();

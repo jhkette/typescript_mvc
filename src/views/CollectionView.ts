@@ -10,8 +10,6 @@ export abstract class CollectionView<T, K> {
   render(): void {
     //   remove HTML to stop repetition
     this.parent.innerHTML = '';
-
-
     // create a template element
     const templateElement = document.createElement('template');
 

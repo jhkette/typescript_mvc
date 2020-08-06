@@ -8,11 +8,13 @@ interface ModelAttributes<T> {
   get<K extends keyof T>(key: K): T[K];
 }
 
+// interface for ApiSync class - to define class
 interface Sync<T> {
   fetch(id: number): AxiosPromise;
   save(data: T): AxiosPromise;
 }
 
+// interface for events - to define events class
 interface Events {
   on(eventName: string, callback: () => void): void;
   trigger(eventName: string): void;
@@ -29,6 +31,8 @@ interface HasId {
 // the generic has to have an id property
 //  this fiex error on fetch method
 export class Model<T extends HasId> {
+  // using interaces here to set up relationship between
+  // classes
   constructor(
     private attributes: ModelAttributes<T>,
     private events: Events,

@@ -10,8 +10,6 @@ export class UserForm  extends View<User, UserProps> {
   //   template function returns a string - which is html
   template(): string {
     return `<div>
-      
-      
         <input placeholder="${this.model.get("name")}"/>
         <button class="set-name">Change Name</button>
         <button class="set-age">Set Random Age</button>
@@ -21,7 +19,6 @@ export class UserForm  extends View<User, UserProps> {
 
   //   how to bind events in a basic way
   // takes an html fragment 
- 
   eventsMap(): { [key: string]: () => void } {
     return {
     
@@ -51,8 +48,4 @@ export class UserForm  extends View<User, UserProps> {
 
     this.model.set({name})
   }
-
-
-
-
 }
